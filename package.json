@@ -1,0 +1,32 @@
+{
+  "name": "levelgen",
+  "version": "0.1.0",
+  "description": "2d map generation",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seikho/levelgen.git"
+  },
+  "keywords": [
+    "2d",
+    "map",
+    "generation",
+    "procedural",
+    "random"
+  ],
+  "author": "Carl Winkler",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/seikho/levelgen/issues"
+  },
+  "homepage": "https://github.com/seikho/levelgen#readme",
+  "devDependencies": {
+    "chai": "^3.3.0",
+    "mocha": "^2.3.3",
+    "typescript": "^1.6.2"
+  }
+}
