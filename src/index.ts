@@ -1,4 +1,4 @@
-import { Options, Level, Row, Cell, Coordinate } from '../index.d.ts'; 
+import { Options, Level, Cell, Coordinate } from '../index.d.ts'; 
 
 /**
  *   The algorithm
@@ -17,5 +17,17 @@ import { Options, Level, Row, Cell, Coordinate } from '../index.d.ts';
  */
 
 function generate(options: Options) {
+    
+}
 
+function getWidth(options: Options) {
+    
+}
+
+function getHeight(options: Options) {
+    
+}
+
+function getDepth(options: Options) {
+    
 }
