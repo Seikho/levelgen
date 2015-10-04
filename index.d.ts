@@ -4,48 +4,34 @@ export interface Options {
     
     /** Fixed width. Overrides min/max width */
     width?: number;
-    
+
+    minWidth?: number;
     maxWidth?: number;
     
     /** Fixed height. Overrides min/max height */
     height?: number;
-    
+
+    minHeight?: number;
     maxHeight?: number;
     
     /** Fixed depth. Overrides min/max depth */
     depth?: number;
-    
+
+    minDepth?: number;
     maxDepth?: number;
 }
 
 export interface Level {
     id: number;
-    
+    map: Cell[][];
 }
 
-export interface Row {
-    id: number;
-    
-    /** Reference to parent Level */
-    parent: Row;
-    
-    cells: Array<Cell>;
-}
 
 export interface Cell {
-    id: number;
+    coordinate: Coordinate;
     
     /** Referece to parent Row */
-    parent: Row;
-}
-
-export interface Coordinate {
-    
-    /** Zero-based */
-    row: number;
-    
-    /** Zero-based */
-    cell: number;
+    parent: Level;
     
     /** Referece to north cell */
     up?: Cell;
@@ -65,5 +51,14 @@ export interface Coordinate {
     /** Referece to below cell */
     below?: Cell;
     
-    [index: string]: any;
+    [key: string]: any;
+}
+
+export interface Coordinate {
+    
+    /** Zero-based */
+    row: number;
+    
+    /** Zero-based */
+    column: number;
 }
