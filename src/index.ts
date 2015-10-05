@@ -16,18 +16,75 @@ import { Options, Level, Cell, Coordinate } from '../index.d.ts';
     10. Finally, sprinkle some monsters and items liberally over dungeon
  */
 
-function generate(options: Options) {
+var defaultMin = 50;
+var defaultMax = 100;
+
+function generate(options?: Options) {
+    options = options || {};
+    var dimension = getDimension(options, defaultMin, defaultMax);
     
+    var width = dimension('width');
+    var height = dimension('height');
+    
+    var level = createLevel(width, height);
+    
+    return level;
 }
 
-function getWidth(options: Options) {
-    
+function getDimension(options: Options, defaultMinimum: number, defaultMaximum: number) {
+    return (dimension: string) => {
+        if (options[dimension]) return options[dimension];
+
+        var minProp = `min${capitalise(dimension) }`;
+        var maxProp = `max${capitalise(dimension) }`;
+
+        var providedMin = options[minProp];
+        var providedMax = options[maxProp];
+
+        if (!providedMin && !providedMax)
+            return getRandomValue(defaultMinimum, defaultMaximum);
+
+        if (!providedMin)
+            return providedMax;
+        
+        if (!providedMax)
+            return providedMin;
+        
+        return getRandomValue(providedMin, providedMax);
+    }
 }
 
-function getHeight(options: Options) {
-    
+function capitalise(word: string) {
+    return `${word.slice(0, 1).toUpperCase() }${word.slice(1) }`;
 }
 
-function getDepth(options: Options) {
+function createLevel(width: number, height: number, id?: number): Level {
     
+    var level: Level = {
+        id: id || 0,
+        map: []
+    };
+    
+    for (var h = 0; height > h;h++) {
+        var row = [];
+        
+        for (var w = 0; width > w; w++) {
+            var coordinate = { row: h, column: w };
+            var parent = row;
+            
+            row.push({
+                coordinate,
+                parent
+            });
+        }
+    }
+    
+    return level;
+}
+/**
+ * Generate a random value between the two values provided
+ */
+function getRandomValue(min: number, max: number) {
+    var difference = Math.abs(max - min);
+    return Math.random() * difference + min;
 }
