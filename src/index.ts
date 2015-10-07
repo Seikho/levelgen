@@ -1,5 +1,5 @@
 import { Options, Level, Cell, Coordinate } from '../index.d.ts'; 
-
+import getDimension =  require('./dimension');
 /**
  *   The algorithm
 
@@ -19,7 +19,7 @@ import { Options, Level, Cell, Coordinate } from '../index.d.ts';
 var defaultMin = 50;
 var defaultMax = 100;
 
-function generate(options?: Options) {
+export function generate(options?: Options) {
     options = options || {};
     var dimension = getDimension(options, defaultMin, defaultMax);
     
@@ -29,33 +29,6 @@ function generate(options?: Options) {
     var level = createLevel(width, height);
     
     return level;
-}
-
-function getDimension(options: Options, defaultMinimum: number, defaultMaximum: number) {
-    return (dimension: string) => {
-        if (options[dimension]) return options[dimension];
-
-        var minProp = `min${capitalise(dimension) }`;
-        var maxProp = `max${capitalise(dimension) }`;
-
-        var providedMin = options[minProp];
-        var providedMax = options[maxProp];
-
-        if (!providedMin && !providedMax)
-            return getRandomValue(defaultMinimum, defaultMaximum);
-
-        if (!providedMin)
-            return providedMax;
-        
-        if (!providedMax)
-            return providedMin;
-        
-        return getRandomValue(providedMin, providedMax);
-    }
-}
-
-function capitalise(word: string) {
-    return `${word.slice(0, 1).toUpperCase() }${word.slice(1) }`;
 }
 
 function createLevel(width: number, height: number, id?: number): Level {
@@ -80,11 +53,4 @@ function createLevel(width: number, height: number, id?: number): Level {
     }
     
     return level;
-}
-/**
- * Generate a random value between the two values provided
- */
-function getRandomValue(min: number, max: number) {
-    var difference = Math.abs(max - min);
-    return Math.random() * difference + min;
 }

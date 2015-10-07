@@ -1,3 +1,4 @@
+var getDimension = require('./dimension');
 /**
  *   The algorithm
 
@@ -23,26 +24,7 @@ function generate(options) {
     var level = createLevel(width, height);
     return level;
 }
-function getDimension(options, defaultMinimum, defaultMaximum) {
-    return function (dimension) {
-        if (options[dimension])
-            return options[dimension];
-        var minProp = "min" + capitalise(dimension);
-        var maxProp = "max" + capitalise(dimension);
-        var providedMin = options[minProp];
-        var providedMax = options[maxProp];
-        if (!providedMin && !providedMax)
-            return getRandomValue(defaultMinimum, defaultMaximum);
-        if (!providedMin)
-            return providedMax;
-        if (!providedMax)
-            return providedMin;
-        return getRandomValue(providedMin, providedMax);
-    };
-}
-function capitalise(word) {
-    return "" + word.slice(0, 1).toUpperCase() + word.slice(1);
-}
+exports.generate = generate;
 function createLevel(width, height, id) {
     var level = {
         id: id || 0,
@@ -60,12 +42,5 @@ function createLevel(width, height, id) {
         }
     }
     return level;
-}
-/**
- * Generate a random value between the two values provided
- */
-function getRandomValue(min, max) {
-    var difference = Math.abs(max - min);
-    return Math.random() * difference + min;
 }
 //# sourceMappingURL=index.js.map
