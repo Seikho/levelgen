@@ -8,14 +8,14 @@ import LG = require('../index.d.ts');
  */
 export function flood(level: LG.Level, gap: number, filler: { key: string, value: any }) {
 
-    var canFlood = isFree(level, filler.key, gap);
+    var canFill = isOccupiable(level, filler.key, gap);
     var fill = fillLevel(level, filler);
     var xform = (direction: LG.Coordinate) => transform(direction, gap);
 
     return function(directions: LG.Coordinate[]) {
 
         var tryFlood = (direction: LG.Coordinate) => {
-            if (canFlood(direction)) flood(xform(direction));
+            if (canFill(direction)) flood(xform(direction));
         }
         
         // Thunk!
@@ -24,7 +24,7 @@ export function flood(level: LG.Level, gap: number, filler: { key: string, value
         function flood(coord?: LG.Coordinate) {
             coord = coord || { column: 0, row: 0 }
 
-            if (canFlood(coord)) fill(coord);
+            if (canFill(coord)) fill(coord);
             directions.forEach(tryFlood);
         }
 
@@ -32,10 +32,17 @@ export function flood(level: LG.Level, gap: number, filler: { key: string, value
     }
 }
 
-function isFree(level: LG.Level, fillerKey: string, distance: number) {
+function isOccupiable(level: LG.Level, fillerKey: string, distance: number) {
+
     return (direction: LG.Coordinate) => {
-        var target = transform(direction, distance);
-        return level.map[target.row][target.column][fillerKey] != null;
+
+        for (var x = 0; x <= distance; x++) {
+            var target = transform(direction, x);
+            var isOccupied = level.map[target.row][target.column][fillerKey] !== undefined;
+            if (isOccupied) return false;
+        }
+        
+        return true;
     }
 }
 

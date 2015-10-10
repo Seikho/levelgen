@@ -5,19 +5,19 @@
  * TODO: Tail call optimisation
  */
 function flood(level, gap, filler) {
-    var canFlood = isFree(level, filler.key, gap);
+    var canFill = isOccupiable(level, filler.key, gap);
     var fill = fillLevel(level, filler);
     var xform = function (direction) { return transform(direction, gap); };
     return function (directions) {
         var tryFlood = function (direction) {
-            if (canFlood(direction))
+            if (canFill(direction))
                 flood(xform(direction));
         };
         // Thunk!
         flood({ column: 0, row: 0 });
         function flood(coord) {
             coord = coord || { column: 0, row: 0 };
-            if (canFlood(coord))
+            if (canFill(coord))
                 fill(coord);
             directions.forEach(tryFlood);
         }
@@ -25,10 +25,15 @@ function flood(level, gap, filler) {
     };
 }
 exports.flood = flood;
-function isFree(level, fillerKey, distance) {
+function isOccupiable(level, fillerKey, distance) {
     return function (direction) {
-        var target = transform(direction, distance);
-        return level.map[target.row][target.column][fillerKey] != null;
+        for (var x = 0; x <= distance; x++) {
+            var target = transform(direction, x);
+            var isOccupied = level.map[target.row][target.column][fillerKey] !== undefined;
+            if (isOccupied)
+                return false;
+        }
+        return true;
     };
 }
 function fillLevel(level, filler) {
