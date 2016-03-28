@@ -1,4 +1,4 @@
-import LG = require('../index.d.ts');
+import { Level, Coordinate } from '../index.d.ts';
 
 /**
  * FloodFill with configurable gap and direction
@@ -6,25 +6,25 @@ import LG = require('../index.d.ts');
  * Returns a function that takes an array for directions
  * TODO: Tail call optimisation
  */
-export function flood(level: LG.Level, gap: number, filler: { key: string, value: any }) {
+export function flood(level: Level, gap: number, filler: { key: string, value: any }) {
 
     var canFill = isOccupiable(level, filler.key, gap);
     var fill = fillLevel(level, filler);
-    var xform = (direction: LG.Coordinate) => transform(direction, gap);
+    var xform = (direction: Coordinate) => transform(direction, gap);
 
-    return function(directions: LG.Coordinate[]) {
+    return function(directions: Coordinate[]) {
 
-        var tryFlood = (direction: LG.Coordinate) => {
+        var tryFlood = (direction: Coordinate) => {
             if (canFill(direction)) flood(xform(direction));
         }
         
         // Thunk!
         flood({ column: 0, row: 0 });
 
-        function flood(coord?: LG.Coordinate) {
-            coord = coord || { column: 0, row: 0 }
+        function flood(coord?: Coordinate) {
+            const floorTarget = coord || { column: 0, row: 0 };
 
-            if (canFill(coord)) fill(coord);
+            if (canFill(floorTarget)) fill(floorTarget);
             directions.forEach(tryFlood);
         }
 
@@ -32,9 +32,9 @@ export function flood(level: LG.Level, gap: number, filler: { key: string, value
     }
 }
 
-function isOccupiable(level: LG.Level, fillerKey: string, distance: number) {
+function isOccupiable(level: Level, fillerKey: string, distance: number) {
 
-    return (direction: LG.Coordinate) => {
+    return (direction: Coordinate) => {
 
         for (var x = 0; x <= distance; x++) {
             var target = transform(direction, x);
@@ -46,8 +46,8 @@ function isOccupiable(level: LG.Level, fillerKey: string, distance: number) {
     }
 }
 
-function fillLevel(level: LG.Level, filler: { key: string, value: any }) {
-    return (coordinate: LG.Coordinate) => level.map[coordinate.row][coordinate.column][filler.key] = filler.value;
+function fillLevel(level: Level, filler: { key: string, value: any }) {
+    return (coordinate: Coordinate) => level.map[coordinate.row][coordinate.column][filler.key] = filler.value;
 }
 
 function xy(x: number, y: number) {
@@ -57,14 +57,14 @@ function xy(x: number, y: number) {
     };
 }
 
-function transform(direction: LG.Coordinate, amount: number) {
+function transform(direction: Coordinate, amount: number) {
     var row = direction.row * amount;
     var column = direction.column * amount;
 
     return { row, column };
 }
 
-var dirs = {
+const dirs = {
     north: xy(0, -1),
     south: xy(0, 1),
     east: xy(1, 0),

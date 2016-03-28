@@ -27,6 +27,6 @@
   "devDependencies": {
     "chai": "^3.3.0",
     "mocha": "^2.3.3",
-    "typescript": "^1.6.2"
+    "typescript": "^1.9.0-dev.20160328"
   }
 }

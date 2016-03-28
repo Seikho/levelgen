@@ -1,8 +1,9 @@
 {
     "compilerOptions": {
-        "target": "ES5",
+        "target": "es5",
         "module": "commonjs",
-        "sourceMap": true
+        "sourceMap": true,
+        "strictNullChecks": true
     },
     "exclude": ["node_modules"]
 }

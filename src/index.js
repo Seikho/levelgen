@@ -1,4 +1,5 @@
-var getDimension = require('./dimension');
+"use strict";
+var dimension_1 = require('./dimension');
 /**
  *   The algorithm
 
@@ -14,15 +15,14 @@ var getDimension = require('./dimension');
     9. Add the up and down staircases at random points in map
     10. Finally, sprinkle some monsters and items liberally over dungeon
  */
-var defaultMin = 50;
-var defaultMax = 100;
-function generate(options) {
-    options = options || {};
-    var dimension = getDimension(options, defaultMin, defaultMax);
+function generate(generateOptions) {
+    var defaultMin = 50;
+    var defaultMax = 100;
+    var options = generateOptions || {};
+    var dimension = dimension_1.default(options, defaultMin, defaultMax);
     var width = dimension('width');
     var height = dimension('height');
-    var level = createLevel(width, height);
-    return level;
+    return createLevel(width, height);
 }
 exports.generate = generate;
 function createLevel(width, height, id) {

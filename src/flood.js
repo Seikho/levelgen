@@ -1,3 +1,4 @@
+"use strict";
 /**
  * FloodFill with configurable gap and direction
  * ... might blow the call stack on large levels :|
@@ -16,9 +17,9 @@ function flood(level, gap, filler) {
         // Thunk!
         flood({ column: 0, row: 0 });
         function flood(coord) {
-            coord = coord || { column: 0, row: 0 };
-            if (canFill(coord))
-                fill(coord);
+            var floorTarget = coord || { column: 0, row: 0 };
+            if (canFill(floorTarget))
+                fill(floorTarget);
             directions.forEach(tryFlood);
         }
         return level;

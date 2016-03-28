@@ -1,5 +1,5 @@
-import { Options, Level, Cell, Coordinate } from '../index.d.ts'; 
-import getDimension =  require('./dimension');
+import { Options, Level, Cell, Coordinate } from '../index.d.ts';
+import getDimension from './dimension';
 /**
  *   The algorithm
 
@@ -16,41 +16,40 @@ import getDimension =  require('./dimension');
     10. Finally, sprinkle some monsters and items liberally over dungeon
  */
 
-var defaultMin = 50;
-var defaultMax = 100;
 
-export function generate(options?: Options) {
-    options = options || {};
+
+export function generate(generateOptions?: Options): Level {
+    const defaultMin = 50;
+    const defaultMax = 100;
+    
+    const options = generateOptions || {};
     var dimension = getDimension(options, defaultMin, defaultMax);
-    
-    var width = dimension('width');
-    var height = dimension('height');
-    
-    var level = createLevel(width, height);
-    
-    return level;
+
+    const width = dimension('width');
+    const height = dimension('height');
+
+    return createLevel(width, height);
 }
 
 function createLevel(width: number, height: number, id?: number): Level {
-    
-    var level: Level = {
+    const level: Level = {
         id: id || 0,
         map: []
     };
-    
-    for (var h = 0; height > h;h++) {
+
+    for (var h = 0; height > h; h++) {
         var row = [];
-        
+
         for (var w = 0; width > w; w++) {
             var coordinate = { row: h, column: w };
             var parent = row;
-            
+
             row.push({
                 coordinate,
                 parent
             });
         }
     }
-    
+
     return level;
 }
